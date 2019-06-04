@@ -19,37 +19,28 @@ admin.initializeApp();
 
 // Get home status given a userID
 exports.getHomeStatus = functions.https.onRequest((req, res) => {
-  // const params = req.url.split("/");
-  // console.log(params);
-  // const userId = params[1];
-  const userID = 'user1';
+  const params = req.url.split("/");
+  const userID = params[1];
   var ref = admin.database().ref('users/' + userID);
-  var isHome;
   ref.once('value', (snapshot) => {
-    var isHome = snapshot.child('isHome').val();
-    console.log(isHome);
+    res.send(JSON.stringify(snapshot.child('isHome').val()));
   }).catch(error => {
     console.error(error);
     res.error(500);
   });
-  res.send(isHome);
 });
 
 // Get user's partner given their userID
 exports.getPartner = functions.https.onRequest((req, res) => {
-  // const params = req.url.split("/");
-  // console.log(params);
-  // const userId = params[1];
-  const userID = 'user1';
+  const params = req.url.split("/");
+  const userID = params[1];
   var ref = admin.database().ref('users/' + userID);
-  var partner;
   ref.once('value', (snapshot) => {
-    partner = snapshot.child('partner').val();
+    res.send(JSON.stringify(snapshot.child('partner').val()));
   }).catch(error => {
     console.error(error);
     res.error(500);
   });
-  res.send(partner);
 });
 
 // Update user's home status when they get home or leave home (handled on client side)
